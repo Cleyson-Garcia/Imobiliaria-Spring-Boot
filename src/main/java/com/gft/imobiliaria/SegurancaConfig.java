@@ -32,7 +32,9 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.antMatchers("/**").hasRole("ADMIN")
+			.antMatchers("/local/**","/classificador/**").hasRole("ADMIN")
+			.antMatchers("/user/**").hasAnyRole("USER","ADMIN")
+			.antMatchers("/").permitAll()
 			.and().formLogin();
 		http.logout();
 	}

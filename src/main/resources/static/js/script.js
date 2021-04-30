@@ -68,3 +68,11 @@ $(function(){
 	});
 	
 });
+
+function toggle(){
+			$("#wrapper").toggleClass("toggled");
+			var elem = document.getElementById("menu-toggle");
+			if (elem.innerHTML =="Mostrar Menu") 
+				elem.innerHTML  = "Esconder Menu";
+		    else elem.innerHTML  = "Mostrar Menu";			
+		}
