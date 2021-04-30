@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="/js/script.js"></script>
+<link rel="stylesheet" href="/css/style.css" />
+
+<title>Layout</title>
+</head>
+
+<body>
+	
+	<div class="d-flex" id="wrapper">
+
+	    <!-- Sidebar -->
+	    <div class="bg-dark border-right text-white" id="sidebar-wrapper">
+	      <div class="sidebar-heading text-dark">.</div>
+	      <div class="list-group list-group-flush">
+	        <a href="#" class="list-group-item list-group-item-action bg-dark text-white" th:href="@{/}">Home</a>
+	        <a href="#" class="list-group-item list-group-item-action bg-dark text-white" th:href="@{/classificador/categorias}">Categorias</a>
+	        <a href="#" class="list-group-item list-group-item-action bg-dark text-white" th:href="@{/classificador/negocios}">Negocios</a>
+	        <a href="#" class="list-group-item list-group-item-action bg-dark text-white" th:href="@{/imoveis}">Imóveis</a>
+	        <a href="#" class="list-group-item list-group-item-action bg-dark text-white" th:href="@{/logout}">Logout</a>
+	      </div>
+	    </div>
+	    <!-- /#sidebar-wrapper -->
+	
+	    <!-- Page Content -->
+	    <div id="page-content-wrapper">
+	
+	      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+	        <button class="btn btn-primary" style="margin-right:30px"  id="menu-toggle" onclick="toggle()">Esconder Menu</button>
+	      	<h3>Imobiliária - Cleyson</h3>
+	      </nav>
+	      <div class="container-fluid">
+	      	<section layout:fragment="content">
+				<p>Page content goes here</p>
+			</section>  
+	      </div>
+	    </div>
+	    <!-- /#page-content-wrapper -->
+	  </div>
+	<script>
+		function toggle(){
+			$("#wrapper").toggleClass("toggled");
+			var elem = document.getElementById("menu-toggle");
+			if (elem.innerHTML =="Mostrar Menu") 
+				elem.innerHTML  = "Esconder Menu";
+		    else elem.innerHTML  = "Mostrar Menu";			
+		}
+	</script>		
+</body>
+</html>
