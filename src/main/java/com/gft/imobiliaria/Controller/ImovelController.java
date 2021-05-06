@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +22,7 @@ import com.gft.imobiliaria.Service.LocalService;
 
 
 @Controller
+@RequestMapping("/imovel")
 public class ImovelController {
 
 	@Autowired
@@ -32,14 +34,14 @@ public class ImovelController {
 	@Autowired
 	private ClassificadorService cServ;
 	
-	@GetMapping("/imoveis")
+	@GetMapping("/todos")
 	public ModelAndView mostrarImoveis() {
 		ModelAndView mv = new ModelAndView("imovel/imoveis");
 		mv.addObject("imoveis",iServ.findAllImoveis());
 		return mv;
 	}
 	
-	@GetMapping("/imovel/cadastro")
+	@GetMapping("/cadastro")
 	public ModelAndView cadastroImovel() {
 		ModelAndView mv = new ModelAndView("imovel/imovelCadastro");
 		addObj(mv);
@@ -47,7 +49,7 @@ public class ImovelController {
 		return mv;
 	}
 	
-	@PostMapping("/imoveis/cadastroPreenchido")
+	@PostMapping("/cadastroPreenchido")
 	public ModelAndView cadastrandoImovel(@Validated Imovel imovel,Errors errors,Long idEstado,Long idMunicipio) {
 		ModelAndView mv = new ModelAndView("imovel/imovelCadastro");
 		System.out.println(imovel);
@@ -118,7 +120,7 @@ public class ImovelController {
 		return mv;
 	}
 	
-	@GetMapping("/imovel/editar/{id}")
+	@GetMapping("/editar/{id}")
 	public ModelAndView editarBairro(@PathVariable Long id) {
 		ModelAndView mv = new ModelAndView("imovel/imovelEditar");
 		Imovel imovel = iServ.findImovelById(id);
@@ -126,11 +128,13 @@ public class ImovelController {
 		addObj(mv);
 		mv.addObject("municipios",imovel.getBairro().getMunicipio().getEstado().getMunicipios());
 		mv.addObject("bairros",imovel.getBairro().getMunicipio().getBairros());
+		mv.addObject("idEstado",imovel.getBairro().getMunicipio().getEstado().getId());
+		mv.addObject("idMunicipio",imovel.getBairro().getMunicipio().getId());
 		return mv;
 	}
 	
-	@PostMapping("/imovel/editar")
-	public ModelAndView editandoImovel(@Validated Imovel imovel,Errors errors) {
+	@PostMapping("/editar")
+	public ModelAndView editandoImovel(@Validated Imovel imovel,Errors errors,Long idEstado, Long idMunicipio) {
 		ModelAndView mv = new ModelAndView("imovel/imovelEditar");
 		boolean erro = false;
 		addObj(mv);
@@ -139,9 +143,23 @@ public class ImovelController {
 		Long idCat = imovel.getCategoria().getId();
 		Long idQua = imovel.getQuartos().getId();
 		Long idBai = imovel.getBairro().getId();
-		mv.addObject("municipios",imovel.getBairro().getMunicipio().getEstado().getMunicipios());
-		mv.addObject("bairros",imovel.getBairro().getMunicipio().getBairros());
 		
+		if(idEstado==null) {
+			customMessage.add("O Estado selecionado deve ser válido.");
+			mv.addObject("erroEstado",true);
+			erro=true;
+		}else {
+			mv.addObject("municipios",lServ.findEstadoById(idEstado).getMunicipios());
+			mv.addObject("idEstado",idEstado);
+		}
+		if(idMunicipio==null) {
+			customMessage.add("O Municipio selecionado deve ser válido.");
+			mv.addObject("erroMunicipio",true);
+			erro=true;
+		}else {
+			mv.addObject("bairros",lServ.findMunicipioById(idMunicipio).getBairros());		
+			mv.addObject("idMunicipio",idMunicipio);
+		}
 		if(idNeg==null) {
 			customMessage.add("O Negócio selecionado deve ser válido.");
 			mv.addObject("erroNegocio",true);
@@ -167,18 +185,19 @@ public class ImovelController {
 			return mv;
 		}
 		mv.addObject("sucesso","O imovel foi atualizado com sucesso!");
+		imovel.setImagens(iServ.findImovelById(imovel.getId()).getImagens());
 		iServ.saveImovel(imovel);
 		return mv;
 	}
 	
-	@GetMapping("/imovel/excluir/{id}")
+	@GetMapping("/excluir/{id}")
 	public ModelAndView excluirImovel(@PathVariable Long id,RedirectAttributes ra) {
 		iServ.excluirImovelById(id);
 		ra.addFlashAttribute("sucesso","O Imóvel foi excluido com sucesso.");
-		return new ModelAndView("redirect:/imoveis");
+		return new ModelAndView("redirect:/imovel/todos");
 	}
 	
-	@GetMapping("/imovel/pesquisar")
+	@GetMapping("/pesquisar")
 	public ModelAndView pesquisarImovel() {
 		ModelAndView mv = new ModelAndView("imovel/imovelPesquisar");
 		addObj(mv);
@@ -186,7 +205,7 @@ public class ImovelController {
 		return mv;
 	}
 	
-	@GetMapping("/imovel/pesquisarResultado")
+	@GetMapping("/pesquisarResultado")
 	public ModelAndView pesquisaRealizadaImovel(Imovel imovel, Long idEstado, Long idMunicipio,
 			BigDecimal valorMinimo, BigDecimal valorMaximo) {
 		ModelAndView mv = new ModelAndView("imovel/imovelPesquisar");
@@ -204,6 +223,13 @@ public class ImovelController {
 		}
 		mv.addObject("imovel",imovel);
 		mv.addObject("imoveis",iServ.findImovelByExample(imovel, idMunicipio, idEstado,valorMinimo,valorMaximo));
+		return mv;
+	}
+	
+	@GetMapping("/visualizar/{id}")
+	public ModelAndView visualizarImovel(@PathVariable Long id) {
+		ModelAndView mv = new ModelAndView("imovel/imovelVisualizar");
+		mv.addObject("imovel",iServ.findImovelById(id));
 		return mv;
 	}
 	

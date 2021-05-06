@@ -2,6 +2,7 @@ package com.gft.imobiliaria.Entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -41,6 +43,10 @@ public class Imovel implements Serializable{
     @ManyToOne
     @JoinColumn(name="BairroImovel")
     private Bairro bairro;
+    
+    @OneToMany
+    @JoinColumn(name="imagens")
+    private List<Imagem> imagens;
     
 	public Long getId() {
 		return id;
@@ -90,6 +96,12 @@ public class Imovel implements Serializable{
 	public String toString() {
 		return "Imovel [id=" + id + ", valor=" + valor + ", negocio=" + negocio + ", categoria=" + categoria
 				+ ", quartos=" + quartos + ", bairro=" + bairro + "]";
+	}
+	public List<Imagem> getImagens() {
+		return imagens;
+	}
+	public void setImagens(List<Imagem> imagens) {
+		this.imagens = imagens;
 	}
     
     

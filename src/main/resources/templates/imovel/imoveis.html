@@ -19,12 +19,12 @@
 			<thead>
 				<tr>
 					<th class="col-1">Id</th>
-					<th class="col-2">Negócio</th>
-					<th class="col-2">Categoria</th>
+					<th class="col-1">Negócio</th>
+					<th class="col-1">Categoria</th>
 					<th class="col-2">Estado</th>
 					<th class="col-1">Quartos</th>
-					<th class="col-1">Preço</th>
-					<th class="col-2">Ações</th>
+					<th class="col-2">Preço</th>
+					<th class="col-3">Ações</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,8 +34,10 @@
 					<td th:text="${imovel.categoria.nome}"/>
 					<td th:text="${imovel.bairro?.municipio?.estado?.nome}"/>
 					<td th:text="${imovel.quartos.quantidade}"/>
-					<td th:text="${imovel.valor}"/>
+					<td th:inline="text">R$
+						[[${#numbers.formatDecimal(imovel.valor, 0, 'COMMA', 2, 'POINT')}]]</td>
 					<td>
+						<a class="btn btn-primary" th:href="@{/imovel/visualizar/{id}(id=${imovel.id})}">Visualizar</a>
 						<a class="btn btn-primary" th:href="@{/imovel/editar/{id}(id=${imovel.id})}">Editar</a>
 						<a class="btn btn-danger" th:href="@{/imovel/excluir/{id}(id=${imovel.id})}">Excluir</a>
 					</td>

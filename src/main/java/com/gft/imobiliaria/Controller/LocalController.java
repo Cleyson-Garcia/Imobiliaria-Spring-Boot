@@ -2,10 +2,8 @@ package com.gft.imobiliaria.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -293,21 +290,4 @@ public class LocalController {
         mv.addObject("texto_busca"," contendo " + pesquisa);
         return mv;
     }
-	
-	
-	@RequestMapping(value= "/municipioEstado", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-    public Map<Long, String> retornaMunicipios(Long idEstado) {
-		//mapear id municipio e nomes
-		return  localService.findMunicipioAsMapPerEstado(idEstado);
-    }
-	
-	@RequestMapping(value= "/bairroMunicipio", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-    public Map<Long, String> retornaBairros(Long idMunicipio) {
-		//mapear id municipio e nomes
-		return  localService.findBairroAsMapPerMunicipio(idMunicipio);
-    }
-    
-	
 }

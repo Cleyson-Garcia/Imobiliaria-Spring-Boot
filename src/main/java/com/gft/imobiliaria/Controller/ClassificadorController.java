@@ -63,6 +63,7 @@ public class ClassificadorController {
 			return mv;
 		}
 		mv.addObject("sucesso","A Categoria foi atualizada com sucesso!");
+		categoria.setImoveis(serv.findCategoriaById(categoria.getId()).getImoveis());
 		serv.saveCategoria(categoria);
 		return mv;
 	}
@@ -129,6 +130,7 @@ public class ClassificadorController {
 			return mv;
 		}
 		mv.addObject("sucesso","O Negócio foi atualizado com sucesso!");
+		negocio.setImoveis(serv.findNegocioById(negocio.getId()).getImoveis());
 		serv.saveNegocio(negocio);
 		return mv;
 	}
@@ -195,7 +197,9 @@ public class ClassificadorController {
 			return mv;
 		}
 		mv.addObject("sucesso","O Quarto foi atualizado com sucesso!");
+		quarto.setImoveis(serv.findQuartosById(quarto.getId()).getImoveis());
 		serv.saveQuartos(quarto);
+		mv.addObject("quarto",quarto);
 		return mv;
 	}
 	

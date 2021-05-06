@@ -88,6 +88,11 @@ public class LocalService {
 		return baiRep.findByNomeContainingIgnoreCase(nome);
 	}
 	
+	//Para pesquisas ajax utilizar apenas a pesquisa findById retorna
+	//uma Collection com os objetos de tal forma que o json entra em um
+	//loop em relações bidirecionais |estado( municipio( estado( municipio( ...))))|
+	//Assim para quebrar o loop retorno um mapa apenas com o Id, para ser capaz de 
+	//identificar o objeto, e o nome, para apresentar na tela.
 	public Map<Long, String> findMunicipioAsMapPerEstado(Long id){
 		Map<Long, String> response = new HashMap<Long,String>();
 		List<Municipio> municipios = findEstadoById(id).getMunicipios();

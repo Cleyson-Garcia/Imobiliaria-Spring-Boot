@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/layoutLogin.html}">
+<head>
+<title>Login</title>
+</head>
+<body>
+	<section layout:fragment="content" class="distanciamento">
+		<h1>Login</h1>
+		<div class="alert alert-danger col-4" th:if="${param.error}">
+			<div >Usuário ou senha inválido.</div>
+		</div>
+		<div class="alert alert-success col-4" th:if="${param.logout}">
+			<div >Sua conta foi desconectada.</div>
+		</div>
+		
+		<form th:action="@{/login}" method="post">
+			<div class="form-item">
+				<label> Usuário : </label>
+				<input class="form-control col-4" placeholder="Insira o Usuário" type="text" name="username" />
+			</div>
+			<div class="form-item">
+				<label > Senha:</label> 
+				<input class="form-control col-4" placeholder="Insira a Senha" type="password" name="password" />
+			</div>
+			<div class="form-item" style="padding:10px 0">
+				<input class="btn btn-primary" type="submit" value="Sign In" />
+			</div>
+		</form>
+		<a th:href="@{/signup}">Cadastre-se</a>
+	</section>
+</body>
+</html>

@@ -6,7 +6,7 @@ $(function(){
 			$('#municipio-div').show();
 			
 			$.ajax({
-				url:"/local/municipioEstado",
+				url:"/ajax/municipioEstado",
 				type:"get",
 				data:{
 					idEstado: idEstado
@@ -42,7 +42,7 @@ $(function(){
 			$('#bairro-div').show();
 			
 			$.ajax({
-				url:"/local/bairroMunicipio",
+				url:"/ajax/bairroMunicipio",
 				type:"get",
 				data:{
 					idMunicipio: idMunicipio
@@ -66,7 +66,6 @@ $(function(){
 			$('#bairro-div').hide();
 		}
 	});
-	
 });
 
 function toggle(){

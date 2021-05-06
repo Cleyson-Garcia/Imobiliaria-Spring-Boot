@@ -9,7 +9,7 @@
 <body>
 	<section layout:fragment="conteudo" class="distanciamento">
 		<h2 class="inline">Pesquisar Imóvel</h2>
-		<a class="btn btn-primary voltar" th:href="@{/user/imoveis}">Voltar</a>
+		<a class="btn btn-primary voltar" th:href="@{/user/imovel/todos}">Voltar</a>
 		
 		<div>
 			<form th:action="@{/user/imovel/pesquisarResultado}" method="get" th:object="${imovel}">
@@ -94,7 +94,7 @@
 					<th class="col-2">Categoria</th>
 					<th class="col-2">Estado</th>
 					<th class="col-1">Quartos</th>
-					<th class="col-1">Preço</th>
+					<th class="col-2">Preço</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -104,7 +104,8 @@
 					<td th:text="${imovel.categoria.nome}"/>
 					<td th:text="${imovel.bairro?.municipio?.estado?.nome}"/>
 					<td th:text="${imovel.quartos.quantidade}"/>
-					<td th:text="${imovel.valor}"/>
+					<td th:inline="text">R$
+						[[${#numbers.formatDecimal(imovel.valor, 0, 'COMMA', 2, 'POINT')}]]</td>
 				</tr>
 				<tr class="text-center">
 					 <td colspan="6" th:if="${#lists.isEmpty(imoveis)}">Nenhum imóvel encontrado</td>

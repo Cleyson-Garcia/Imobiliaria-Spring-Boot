@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +16,7 @@ import com.gft.imobiliaria.Service.LocalService;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user/imovel")
 public class ImovelUserController {
 
 	@Autowired
@@ -27,14 +28,14 @@ public class ImovelUserController {
 	@Autowired
 	private ClassificadorService cServ;
 	
-	@GetMapping("/imoveis")
+	@GetMapping("/todos")
 	public ModelAndView mostrarImoveis() {
 		ModelAndView mv = new ModelAndView("imovelUser/imoveis");
 		mv.addObject("imoveis",iServ.findAllImoveis());
 		return mv;
 	}
 	
-	@GetMapping("/imovel/pesquisar")
+	@GetMapping("/pesquisar")
 	public ModelAndView pesquisarImovel() {
 		ModelAndView mv = new ModelAndView("imovelUser/imovelPesquisar");
 		addObj(mv);
@@ -42,7 +43,7 @@ public class ImovelUserController {
 		return mv;
 	}
 	
-	@GetMapping("/imovel/pesquisarResultado")
+	@GetMapping("/pesquisarResultado")
 	public ModelAndView pesquisaRealizadaImovel(Imovel imovel, Long idEstado, Long idMunicipio,
 			BigDecimal valorMinimo, BigDecimal valorMaximo) {
 		ModelAndView mv = new ModelAndView("imovelUser/imovelPesquisar");
@@ -63,7 +64,13 @@ public class ImovelUserController {
 		return mv;
 	}
 	
-	
+	@GetMapping("/visualizar/{id}")
+	public ModelAndView visualizarImovel(@PathVariable Long id) {
+		ModelAndView mv = new ModelAndView("imovelUser/imovelVisualizar");
+		mv.addObject("imovel",iServ.findImovelById(id));
+		return mv;
+	}
+		
 	private void addObj(ModelAndView mv) {
 		mv.addObject("negocios", cServ.findAllNegocio());
 		mv.addObject("categorias",cServ.findAllCategoria());

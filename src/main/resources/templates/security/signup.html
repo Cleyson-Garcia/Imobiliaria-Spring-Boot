@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/layoutLogin.html}">
+<head>
+<title>Cadastro</title>
+</head>
+<body>
+	<section layout:fragment="content" class="distanciamento">
+		<h1>Cadastro</h1>
+		<form th:action="@{/signup}" method="post" th:object="${user}">
+			<div th:replace="fragments/mensagemErro"></div>
+			<div class="form-item" th:classappend="${#fields.hasErrors('userName')}? is-invalid">
+				<label> Usuário : </label>
+				<input class="form-control col-4" placeholder="Insira o Usuário" type="text" th:field="*{userName}"/>
+			</div>
+			<div class="form-item" th:classappend="${#fields.hasErrors('email')} or ${erroEmail}? is-invalid">
+				<label> Email : </label>
+				<input class="form-control col-4" placeholder="Insira o Email" type="email" th:field="*{email}"/>
+			</div>
+			<div class="form-item" th:classappend="${#fields.hasErrors('password')}? is-invalid">
+				<label > Senha:</label> 
+				<input class="form-control col-4" placeholder="Insira a Senha" type="password" th:field="*{password}"/>
+			</div>
+			<div class="form-item" style="padding:10px 0">
+				<input class="btn btn-primary" type="submit" value="Sign Up" />
+			</div>
+		</form>
+	</section>
+</body>
+</html>

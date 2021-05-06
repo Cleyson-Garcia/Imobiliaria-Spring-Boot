@@ -9,7 +9,7 @@
 <body>
 	<section layout:fragment="content" class="distanciamento">
 		<h2 class="inline">Atualizar Imóvel</h2>
-		<a class="btn btn-primary voltar" th:href="@{/imoveis}">Voltar</a>
+		<a class="btn btn-primary voltar" th:href="@{/imovel/todos}">Voltar</a>
 		
 		<div>
 			<form th:action="@{/imovel/editar}" method="post" th:object="${imovel}">
@@ -53,21 +53,21 @@
 				<div class="row">
 					<div class="form-item col-3" th:classappend="${erroEstado}? is-invalid">
 						<label for="estado-select">Estado</label>
-						<select id="estado-select"class="form-control" th:field="*{bairro.municipio.estado}">
+						<select id="estado-select"class="form-control" name="idEstado">
 							<option value="" selected>Escolha o Estado</option>
-							<option th:each="e:${estados}" th:value="${e.id}" th:text="${e.nome}">
+							<option th:selected="${e.id==idEstado}" th:each="e:${estados}" th:value="${e.id}" th:text="${e.nome}">
 						</select>		
 					</div>	
 					
-					<div class="form-item col-4" id="municipio-div" th:classappend="${erroMunicipio}? is-invalid">
+					<div class="form-item col-4" id="municipio-div" th:styleappend="${idEstado}?'': 'display:none'" th:classappend="${erroMunicipio}? is-invalid">
 						<label for="municipio-select">Município</label>
-						<select id="municipio-select" class="form-control" th:field="*{bairro.municipio}">
+						<select id="municipio-select" class="form-control" name="idMunicipio">
 							<option value="" selected>Escolha o Município</option>
-							<option th:each="m:${municipios}" th:value="${m.id}" th:text="${m.nome}">
+							<option th:selected="${m.id==idMunicipio}" th:each="m:${municipios}" th:value="${m.id}" th:text="${m.nome}">
 						</select>		
 					</div>	
 					
-					<div class="form-item col-3" id="bairro-div"  th:classappend="${erroBairro}? is-invalid">
+					<div class="form-item col-3" id="bairro-div" th:styleappend="${idMunicipio} and ${idEstado}?'': 'display:none'"  th:classappend="${erroBairro}? is-invalid">
 						<label for="bairro-select">Bairro</label>
 						<select id="bairro-select" th:field="*{bairro.id}" class="form-control">
 							<option value="" selected>Escolha o Bairro</option>
